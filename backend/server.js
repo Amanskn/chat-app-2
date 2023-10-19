@@ -16,7 +16,7 @@ app.get(["/health", "/"], (req, res) => {
   });
 });
 app.get(
-  "/api/v1/chat",
+  "/api/v1/chats",
   // (req, res, n) => {
   //   console.log("custom middleware ");
   //   // return res.send("hello");
@@ -25,9 +25,9 @@ app.get(
   // },
   (req, res) => {
     // console.log("req.url is :-", req.url);
-    res.status(200).json({
-      msg: "Hello",
-    });
+    res
+      .status(200)
+      .json([{ msg: "hi" }, { msg: "hello" }, { msg: "what's up" }]);
   }
 );
 

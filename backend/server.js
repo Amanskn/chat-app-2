@@ -2,6 +2,8 @@ const express = require("express");
 require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 3000;
+const mongo_uri = process.env.MONGO_URI;
+const { connectDB } = require("./config/db.js");
 
 // ----------------custom middleware
 // app.use((req, res, next) => {
@@ -36,14 +38,22 @@ app.get(
 //   res.sendFile(__dirname + "/abc.html");
 // });
 
-// ----------------starting the server here
-app.listen(port, (err) => {
-  if (err) {
-    console.log("Error in running the server and the error is :-", err);
-    return;
+// ----------------starting the server after the DB connection gets established
+const start = async () => {
+  try {
+    await connectDB(mongo_uri);
+    app.listen(port, (err) => {
+      if (err) {
+        console.log("Error in running the server and the error is :-", err);
+        return;
+      }
+      console.log("Server running on port:-", port);
+    });
+  } catch (error) {
+    console.log("There came an error in start()", error);
   }
-  console.log("Server running on port:-", port);
-});
+};
+start();
 
 // ------------------------------Just a new server code to log the error (which we are trying
 // ------------------------ to throw intentionally) like:- port already in use
